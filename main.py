@@ -6,7 +6,7 @@ import re
 import webbrowser
 import openai
 
-st.set_page_config(page_title="Pathway Explorer", page_icon=":smiley:", layout="wide")
+st.set_page_config(page_title="OpenAI Fine Tuning Service", page_icon=":smiley:", layout="wide")
 
 # Render the api key input and enter button
 api_key = st.text_input('Enter your API key:', '')
@@ -108,7 +108,7 @@ st.markdown(
 )
 st.markdown(
     """
-    <div class="footer">RUIPING AI - For Internal Evaluation Only</div>
+    <div class="footer">Experimental</div>
     """,
     unsafe_allow_html=True,
 )
