@@ -19,11 +19,15 @@ if api_key.startswith('sk-'):
     
     st.subheader("Files")
     files = openai.File.list()
-    st.table(pd.DataFrame(files.data))
+    st.table(pd.DataFrame(sorted(files.data, key=lambda k: -k['created_at'])))
     
     st.subheader("Jobs")
     jobs = openai.FineTuningJob.list()
-    st.table(pd.DataFrame(jobs.data))
+    st.table(pd.DataFrame(sorted(jobs.data, key=lambda k: -k['created_at'])))
+    
+    st.subheader("Finetuned Models")
+    models = openai.Model.list()
+    st.table(pd.DataFrame([d for d in models.data if d["id"].startswith("ft")]))
     
     st.subheader("Debug Info")
     response_display = st.empty()
@@ -31,10 +35,10 @@ if api_key.startswith('sk-'):
     with st.sidebar:
         file = st.file_uploader("Upload a file", accept_multiple_files=False)
         
-        file_ids = [d["id"] for d in files.data]
+        file_ids = [d["id"] for d in sorted(files.data, key=lambda k: -k['created_at'])]
         file_id = st.selectbox("Select a file", file_ids)
         
-        job_ids = [d["id"] for d in jobs.data]
+        job_ids = [d["id"] for d in sorted(jobs.data, key=lambda k: -k['created_at'])]
         job_id = st.selectbox("Select a job", job_ids)
         
         if file:
