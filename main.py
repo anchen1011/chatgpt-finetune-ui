@@ -41,6 +41,8 @@ if api_key.startswith('sk-'):
         job_ids = [d["id"] for d in sorted(jobs.data, key=lambda k: -k['created_at'])]
         job_id = st.selectbox("Select a job", job_ids)
         
+        n_epochs = st.number_input("Number of Epochs", min_value=1, max_value=100, value=3)
+        
         if file:
             uploaded_file = openai.File.create(file=file, purpose='fine-tune', user_provided_filename=file.name)
             response_display.write(uploaded_file)
@@ -50,7 +52,7 @@ if api_key.startswith('sk-'):
             response_display.write(deleted_file)
 
         if st.button("Create Fine-Tuning Job") and file_id:
-            job = openai.FineTuningJob.create(training_file=file_id, model='gpt-3.5-turbo')
+            job = openai.FineTuningJob.create(training_file=file_id, model='gpt-3.5-turbo', hyperparameters={"n_epochs":n_epochs, })
             response_display.write(job)
 
         if st.button("Get Fine-Tuning Job Detail") and job_id:
